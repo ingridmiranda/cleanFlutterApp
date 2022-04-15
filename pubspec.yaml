@@ -37,6 +37,7 @@ dependencies:
   test: ^1.19.5
   mockito: ^5.1.0
   faker: ^2.0.0
+  mocktail: ^0.3.0
 
 dev_dependencies:
   flutter_test:
