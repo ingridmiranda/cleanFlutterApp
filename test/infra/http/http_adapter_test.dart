@@ -17,6 +17,7 @@ class HttpAdapter implements HttpClient {
   Future<Map?> request(
       {required String url, required String method, Map? body}) async {
     Response? response;
+    Map? requestResponse;
     try {
       final headers = {
         'content-type': 'application/json',
@@ -25,12 +26,15 @@ class HttpAdapter implements HttpClient {
       final jsonBody = body != null ? jsonEncode(body) : null;
       response =
           await client.post(Uri.parse(url), headers: headers, body: jsonBody);
+      if (response.statusCode == 200) {
+        requestResponse =
+            response.body.isNotEmpty ? jsonDecode(response.body) : null;
+      } else {
+        return null;
+      }
     } catch (e) {
       debugPrint(e.toString());
     }
-    final requestResponse = (response != null && response.body.isNotEmpty)
-        ? jsonDecode(response.body)
-        : null;
     return requestResponse;
   }
 }
@@ -96,6 +100,14 @@ void main() {
 
     test('Should return null if post returns 204', () async {
       mockResponse(204, body: "");
+
+      final response = await sut.request(url: url, method: 'post');
+
+      expect(response, null);
+    });
+
+    test('Should return null if post returns 204 with data', () async {
+      mockResponse(204);
 
       final response = await sut.request(url: url, method: 'post');
 
