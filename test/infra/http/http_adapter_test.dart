@@ -50,12 +50,12 @@ void main() {
   });
 
   group('post', () {
-    When mockRequest = when(() => client.post(any(),
+    When mockRequest() => when(() => client.post(any(),
         headers: any(named: 'headers'), body: any(named: 'body')));
 
     void mockResponse(int statusCode,
         {String body = '{"any_key":"any_value"}'}) {
-      mockRequest.thenAnswer((_) async => Response(body, statusCode));
+      mockRequest().thenAnswer((_) async => Response(body, statusCode));
     }
 
     setUp(() {
@@ -88,6 +88,14 @@ void main() {
 
     test('Should return null if post returns 200 with no data', () async {
       mockResponse(200, body: "");
+
+      final response = await sut.request(url: url, method: 'post');
+
+      expect(response, null);
+    });
+
+    test('Should return null if post returns 204', () async {
+      mockResponse(204, body: "");
 
       final response = await sut.request(url: url, method: 'post');
 
