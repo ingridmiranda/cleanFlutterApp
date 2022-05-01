@@ -14,7 +14,6 @@ class HttpAdapter implements HttpClient {
   Future<Map?> request(
       {required String url, required String method, Map? body}) async {
     Response? response;
-    Map? requestResponse;
     try {
       final headers = {
         'content-type': 'application/json',
@@ -23,15 +22,18 @@ class HttpAdapter implements HttpClient {
       final jsonBody = body != null ? jsonEncode(body) : null;
       response =
           await client.post(Uri.parse(url), headers: headers, body: jsonBody);
-      if (response.statusCode == 200) {
-        requestResponse =
-            response.body.isNotEmpty ? jsonDecode(response.body) : null;
-      } else {
-        return null;
-      }
+      return _handleResponse(response);
     } catch (e) {
       debugPrint(e.toString());
+      return null;
     }
-    return requestResponse;
+  }
+
+  Map? _handleResponse(Response response) {
+    if (response.statusCode == 200) {
+      return response.body.isNotEmpty ? jsonDecode(response.body) : null;
+    } else {
+      return null;
+    }
   }
 }
