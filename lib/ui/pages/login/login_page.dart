@@ -29,8 +29,7 @@ class LoginPage extends StatelessWidget {
                               labelText: 'Email',
                               icon: Icon(Icons.email,
                                   color: Theme.of(context).primaryColorLight),
-                              errorText: (snapshot.data != null &&
-                                      snapshot.data!.isEmpty)
+                              errorText: snapshot.data?.isEmpty == true
                                   ? null
                                   : snapshot.data),
                           keyboardType: TextInputType.emailAddress,
@@ -39,14 +38,19 @@ class LoginPage extends StatelessWidget {
                       }),
                   Padding(
                     padding: const EdgeInsets.only(top: 8, bottom: 32),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                          labelText: 'Senha',
-                          icon: Icon(Icons.lock,
-                              color: Theme.of(context).primaryColorLight)),
-                      obscureText: true,
-                      onChanged: presenter?.validatePassword,
-                    ),
+                    child: StreamBuilder<String?>(
+                        stream: presenter?.passwordErrorStream,
+                        builder: (context, snapshot) {
+                          return TextFormField(
+                            decoration: InputDecoration(
+                                labelText: 'Senha',
+                                icon: Icon(Icons.lock,
+                                    color: Theme.of(context).primaryColorLight),
+                                errorText: snapshot.data),
+                            obscureText: true,
+                            onChanged: presenter?.validatePassword,
+                          );
+                        }),
                   ),
                   ElevatedButton(
                       onPressed: null, child: Text('Entrar'.toUpperCase())),
