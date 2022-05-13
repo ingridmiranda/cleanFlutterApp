@@ -21,7 +21,7 @@ class LoginPage extends StatelessWidget {
                         children: [
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
+                            children: const [
                               CircularProgressIndicator(),
                               SizedBox(height: 10),
                               Text('Aguarde...', textAlign: TextAlign.center)
@@ -29,6 +29,10 @@ class LoginPage extends StatelessWidget {
                           )
                         ],
                       ));
+            } else {
+              if (Navigator.canPop(context)) {
+                Navigator.of(context).pop();
+              }
             }
           });
 
