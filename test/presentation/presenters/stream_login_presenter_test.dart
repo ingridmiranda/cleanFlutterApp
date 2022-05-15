@@ -4,9 +4,7 @@ import 'package:faker/faker.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
-abstract class Validation {
-  String? validate({String field, String value});
-}
+import 'package:cleanflutterapp/presentation/protocols/validation.dart';
 
 class LoginState {
   String? emailError;
