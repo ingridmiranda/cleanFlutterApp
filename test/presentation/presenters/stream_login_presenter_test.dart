@@ -76,4 +76,19 @@ void main() {
           .called(1);
     },
   );
+
+  test(
+    'Should emit password error if validation fails',
+    () {
+      mockValidation("password", 'error');
+
+      sut?.passwordErrorStream
+          .listen(expectAsync1((error) => expect(error, 'error')));
+      sut?.isFormValidStream
+          .listen(expectAsync1((isValid) => expect(isValid, false)));
+
+      sut?.validatePassword(email ?? "");
+      sut?.validatePassword(email ?? "");
+    },
+  );
 }
