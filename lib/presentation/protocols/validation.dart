@@ -1,3 +1,3 @@
 abstract class Validation {
-  String? validate({String field, String value});
+  String? validate({String field, String? value});
 }
