@@ -1,8 +1,6 @@
 import 'dart:async';
 
-import 'package:cleanflutterapp/domain/entities/entities.dart';
-import 'package:cleanflutterapp/domain/helpers/domain_error.dart';
-
+import '../../domain/helpers/domain_error.dart';
 import '../../domain/usecases/usecases.dart';
 
 import '../protocols/protocols.dart';
